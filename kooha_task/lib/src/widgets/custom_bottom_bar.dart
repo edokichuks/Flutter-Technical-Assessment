@@ -52,7 +52,7 @@ class CustomBottomBarState extends State<CustomBottomBar> {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
-        SizedBox(
+        const SizedBox(
           width: double.maxFinite,
           child: Divider(),
         ),
@@ -179,14 +179,14 @@ class DefaultWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       color: Colors.white,
-      padding: EdgeInsets.all(10),
-      child: Center(
+      padding: const EdgeInsets.all(10),
+      child: const Center(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text(
-              'Please replace the respective Widget here',
+              'No Screen Found',
               style: TextStyle(
                 fontSize: 18,
               ),

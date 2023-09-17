@@ -69,6 +69,7 @@ class ImageConstant {
 
   // Wallet - Empty state images
   static String imgMaskgroup = '$imagePath/img_maskgroup.png';
+  static String noTrans = '$imagePath/no_trans.png';
 
   // Wallet - See all - Received images
   static String imgVuesaxOutlineArrowdownPrimarycontainer =

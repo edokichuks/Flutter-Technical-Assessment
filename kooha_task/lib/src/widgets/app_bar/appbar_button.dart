@@ -25,7 +25,7 @@ class AppbarButton extends StatelessWidget {
       child: Padding(
         padding: margin ?? EdgeInsets.zero,
         child: CustomElevatedButton(
-          height: 39.v,
+          height: 50.v,
           width: 200.h,
           text: "Switch to Create account",
           buttonTextStyle: CustomTextStyles.titleSmallAmberA700Medium,
