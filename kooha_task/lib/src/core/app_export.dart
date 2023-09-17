@@ -1,5 +1,6 @@
 export 'package:kooha_task/src/core/constants/constants.dart';
 export 'package:kooha_task/src/core/utils/image_constant.dart';
+export 'package:kooha_task/src/core/utils/size_utils.dart';
 export 'package:kooha_task/src/theme/app_decoration.dart';
 export 'package:kooha_task/src/theme/custom_text_style.dart';
 export 'package:kooha_task/src/theme/theme_helper.dart';
