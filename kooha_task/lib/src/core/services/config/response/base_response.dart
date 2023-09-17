@@ -1,18 +1,17 @@
 import 'package:equatable/equatable.dart';
 import 'package:json_annotation/json_annotation.dart';
-
 part 'base_response.g.dart';
 
 @JsonSerializable(genericArgumentFactories: true)
 class BaseResponse<T> extends Equatable {
   final T? data;
-  @JsonKey(name: "status_code")
-  final int? statusCode;
+  @JsonKey(name: "success")
+  final bool status;
   final String? message;
 
   const BaseResponse({
     this.data,
-    required this.statusCode,
+    required this.status,
     this.message,
   }) : super();
 
@@ -25,9 +24,9 @@ class BaseResponse<T> extends Equatable {
 
   factory BaseResponse.fromMap(Map<String, dynamic> json) {
     return BaseResponse(
-      data: json['data'],
-      statusCode: json['status_code'] ?? false,
-      message: json['message'] ?? 'An error occured',
+      data: null,
+      status: json['success'] ?? false,
+      message: json['message'] ?? 'Error',
     );
   }
 
@@ -35,5 +34,5 @@ class BaseResponse<T> extends Equatable {
       _$BaseResponseToJson(this, toJsonT);
 
   @override
-  List<Object?> get props => [statusCode, message, data];
+  List<Object?> get props => [status, message, data];
 }

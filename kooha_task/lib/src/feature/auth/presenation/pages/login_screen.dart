@@ -1,5 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:kooha_task/src/core/app_export.dart';
+import 'package:kooha_task/src/core/utils/app_enums.dart';
+import 'package:kooha_task/src/feature/auth/models/login_model.dart';
+import 'package:kooha_task/src/feature/auth/notifiers/login_notifier.dart';
+import 'package:kooha_task/src/feature/auth/notifiers/login_state.dart';
 import 'package:kooha_task/src/feature/dashboard/wallet_screen.dart';
 import 'package:kooha_task/src/widgets/app_bar/appbar_button.dart';
 import 'package:kooha_task/src/widgets/app_bar/appbar_iconbutton.dart';
@@ -79,20 +84,39 @@ class LoginScreen extends StatelessWidget {
                           style: CustomTextStyles.titleSmallAmberA700))
                 ])),
           ])),
-      bottomNavigationBar: CustomElevatedButton(
-        text: "Log me in",
-        isDisabled: false,
-        margin: EdgeInsets.only(left: 25.h, right: 24.h, bottom: 48.v),
-        buttonStyle: CustomButtonStyles.fillPrimary,
-        onTap: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => WalletEmptyStateScreen(),
-            ),
-          );
-        },
-      ),
+      bottomNavigationBar: Consumer(builder: (context, ref, child) {
+        _navigateToHome(ref, context);
+        final state = ref.watch(loginProvider);
+        final notifier = ref.read(loginProvider.notifier);
+        final data = LoginModel(
+            email: emailController.text, password: passwordController.text);
+        return CustomElevatedButton(
+          text: "Log me in",
+          isLoading: state.loadState == LoginLoadState.loading,
+          isDisabled: false,
+          margin: EdgeInsets.only(left: 25.h, right: 24.h, bottom: 48.v),
+          buttonStyle: CustomButtonStyles.fillPrimary,
+          onTap: () {
+            notifier.login(
+              data,
+            );
+          },
+        );
+      }),
     );
+  }
+
+  void _navigateToHome(WidgetRef ref, BuildContext context) async {
+    ref.listen<LoginState>(loginProvider, (previous, next) {
+      if (next.loadState == LoginLoadState.success) {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => WalletEmptyStateScreen(),
+          ),
+        );
+        return;
+      }
+    });
   }
 }

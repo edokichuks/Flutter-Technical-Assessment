@@ -2,40 +2,36 @@ import 'package:dio/dio.dart';
 import 'package:kooha_task/src/core/services/config/exception/logger.dart';
 import 'package:kooha_task/src/core/services/config/response/base_response.dart';
 
-
 class AppException {
   //HANDLE ERROR
   static BaseResponse<T> handleError<T>(
     DioException e, {
     T? data,
   }) {
-    if (DioExceptionType.connectionError == e.type) {
-      return BaseResponse(
-          statusCode: 99, data: data, message: 'No Internet Connection');
-    } else if (e.response != null && DioExceptionType.badResponse == e.type) {
+    if (e.response != null && DioExceptionType.badResponse == e.type) {
       if (e.response == null ||
           DioExceptionType.badResponse != e.type &&
               e.response!.statusCode! >= 500) {
         return BaseResponse(
-          statusCode: e.response!.statusCode!,
-          message: "A server error occurred",
+          status: false,
+          message: 'Server Error',
           data: data,
         );
       }
       if (e.response?.data is Map<String, dynamic>) {
-        debugLog(BaseResponse.fromMap(e.response?.data));
+        debugLog(BaseResponse.fromMap(e.response?.data).message);
         return BaseResponse.fromMap(e.response?.data);
       } else if (e.response?.data is String) {
         debugLog(e.response?.data);
         return BaseResponse(
-          statusCode: e.response!.statusCode,
+          status: false,
           message: e.response?.data,
           data: data,
         );
       }
     }
     return BaseResponse(
-      statusCode: e.response?.statusCode,
+      status: false,
       data: data,
       message: _mapException(e.type),
     );
@@ -45,10 +41,10 @@ class AppException {
     if (DioExceptionType.connectionTimeout == error ||
         DioExceptionType.receiveTimeout == error ||
         DioExceptionType.sendTimeout == error) {
-      return 'Connection Time Out';
+      return 'Service Time Out';
     } else if (DioExceptionType.unknown == error) {
-      return 'Please check your internet connection';
+      return 'Connection Error';
     }
-    return "A server error occurred";
+    return 'Error from Server';
   }
 }

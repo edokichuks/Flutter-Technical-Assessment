@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:kooha_task/src/core/app_export.dart';
 import 'package:kooha_task/src/widgets/base_button.dart';
@@ -16,6 +17,7 @@ class CustomElevatedButton extends BaseButton {
     bool? isDisabled,
     double? height,
     double? width,
+    this.isLoading,
     required String text,
   }) : super(
           text: text,
@@ -34,6 +36,7 @@ class CustomElevatedButton extends BaseButton {
   final Widget? leftIcon;
 
   final Widget? rightIcon;
+  final bool? isLoading;
 
   @override
   Widget build(BuildContext context) {
@@ -53,18 +56,20 @@ class CustomElevatedButton extends BaseButton {
         child: ElevatedButton(
           style: buttonStyle,
           onPressed: isDisabled ?? false ? null : onTap ?? () {},
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              leftIcon ?? const SizedBox.shrink(),
-              Text(
-                text,
-                style: buttonTextStyle ?? theme.textTheme.titleMedium,
-              ),
-              rightIcon ?? const SizedBox.shrink(),
-            ],
-          ),
+          child: isLoading ?? false
+              ? CupertinoActivityIndicator()
+              : Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    leftIcon ?? const SizedBox.shrink(),
+                    Text(
+                      text,
+                      style: buttonTextStyle ?? theme.textTheme.titleMedium,
+                    ),
+                    rightIcon ?? const SizedBox.shrink(),
+                  ],
+                ),
         ),
       );
 }
